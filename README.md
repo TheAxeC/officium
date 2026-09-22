@@ -275,3 +275,7 @@ npm run format:check
 ```
 
 The privacy test checks the ignore rule and fails when Git reports a tracked path below `rituals/`.
+
+## License
+
+Officium is available under the [MIT License](LICENSE).
