@@ -1,0 +1,99 @@
+schema_version: 1
+id: demonstration-ritual
+order: 10
+document_type: ritual
+title: Demonstratiescript
+language: nl
+source:
+    file: sources/demonstration-ritual.pdf
+roles:
+    - id: chair
+      label: Voorzitter
+    - id: coordinator
+      label: Coördinator
+    - id: speaker
+      label: Spreker
+sections:
+    - id: opening
+      title: Opening
+      entries:
+          - id: opening-direction
+            kind: direction
+            text: De aanwezigen nemen hun plaatsen in. De ruimte wordt stil.
+            source:
+                pdf_page: 1
+                printed_page: "1"
+          - id: chair-welcome
+            kind: speech
+            speaker: chair
+            text: Wij openen deze fictieve bijeenkomst en heten iedereen welkom.
+            source:
+                pdf_page: 1
+                printed_page: "1"
+          - id: master-prepares-table
+            kind: action
+            roles:
+                - coordinator
+            text: De coördinator legt het werkboek en de drie oefenkaarten op de tafel.
+            source:
+                pdf_page: 1
+                printed_page: "1"
+          - id: master-reports
+            kind: speech
+            speaker: coordinator
+            text: Voorzitter, de materialen zijn gereed voor de oefening.
+            source:
+                pdf_page: 1
+                printed_page: "1"
+          - id: chair-addresses-master
+            kind: speech
+            speaker: chair
+            text: Coördinator, begeleid de deelnemer naar de tafel.
+            source:
+                pdf_page: 2
+                printed_page: "2"
+          - id: master-guides-visitor
+            kind: action
+            roles:
+                - coordinator
+            text: De coördinator begeleidt de deelnemer naar de tafel.
+            source:
+                pdf_page: 2
+                printed_page: "2"
+    - id: reflection
+      title: Overweging
+      entries:
+          - id: reflection-introduction
+            kind: text
+            text: De volgende woorden zijn uitsluitend voor het fictieve voorbeeld geschreven.
+            source:
+                pdf_page: 2
+                printed_page: "2"
+          - id: speaker-reflects
+            kind: speech
+            speaker: speaker
+            text: Aandacht geeft vorm aan wat wij lezen; herhaling maakt de samenhang zichtbaar.
+            source:
+                pdf_page: 2
+                printed_page: "2"
+          - id: master-closes-book
+            kind: action
+            roles:
+                - coordinator
+            text: De coördinator sluit het werkboek en verzamelt de oefenkaarten.
+            source:
+                pdf_page: 3
+                printed_page: "3"
+          - id: master-completes
+            kind: speech
+            speaker: coordinator
+            text: Voorzitter, de oefening is afgerond.
+            source:
+                pdf_page: 3
+                printed_page: "3"
+          - id: closing-direction
+            kind: direction
+            text: De bijeenkomst wordt in stilte gesloten.
+            source:
+                pdf_page: 3
+                printed_page: "3"

@@ -1,0 +1,843 @@
+:root {
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        sans-serif;
+    color: #1d242a;
+    background: #f6f7f7;
+    font-synthesis: none;
+    --surface-app: #f6f7f7;
+    --surface-document: #fbfbfa;
+    --surface-outline: #eef1f2;
+    --surface-toolbar: #fbfbfa;
+    --surface-toolbar-control: #ffffff;
+    --surface-hover: #e5eaec;
+    --surface-current: #dde5e9;
+    --surface-question: #f2f4f4;
+    --surface-speech: #fff8df;
+    --surface-speech-muted: #fffdf5;
+    --surface-action: #eaf3f6;
+    --surface-action-muted: #f6fafb;
+    --surface-direction: #f0f2f2;
+    --text-main: #1d242a;
+    --text-body: #252d32;
+    --text-muted: #657179;
+    --text-toolbar: #1d242a;
+    --text-toolbar-muted: #657179;
+    --line-toolbar: #d6dbde;
+    --line-toolbar-control: #cbd2d5;
+    --line: #d6dbde;
+    --line-soft: #e0e3e4;
+    --line-current: #526a78;
+    --speech: #c89a2e;
+    --action: #3e7d93;
+    --focus: #285b78;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    min-width: 320px;
+    margin: 0;
+    overflow: hidden;
+}
+
+body {
+    background: var(--surface-app);
+}
+
+button,
+select {
+    font: inherit;
+}
+
+button:focus-visible,
+select:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+}
+
+.app-shell {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100dvh;
+    min-height: 520px;
+    overflow: hidden;
+    background: var(--surface-app);
+}
+
+.app-header {
+    z-index: 3;
+    display: grid;
+    flex: none;
+    grid-template-columns: auto minmax(180px, 280px) minmax(160px, 240px) 1fr auto auto;
+    align-items: end;
+    gap: 18px;
+    min-height: 72px;
+    padding: 12px 20px;
+    color: var(--text-toolbar);
+    background: var(--surface-toolbar);
+    border-bottom: 1px solid var(--line-toolbar);
+}
+
+.wordmark {
+    align-self: center;
+    margin-right: 8px;
+    font-size: 17px;
+    font-weight: 680;
+    letter-spacing: 0.03em;
+}
+
+.selector {
+    display: grid;
+    gap: 5px;
+}
+
+.selector span {
+    color: var(--text-toolbar-muted);
+    font-size: 11px;
+    font-weight: 650;
+}
+
+select {
+    width: 100%;
+    height: 36px;
+    padding: 0 32px 0 10px;
+    color: var(--text-toolbar);
+    background: var(--surface-toolbar-control);
+    border: 1px solid var(--line-toolbar-control);
+    border-radius: 5px;
+    font-size: 13px;
+}
+
+.header-progress {
+    align-self: center;
+    color: var(--text-toolbar-muted);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.library-change {
+    align-self: center;
+    height: 32px;
+    padding: 0 11px;
+    color: var(--text-toolbar);
+    background: var(--surface-toolbar-control);
+    border: 1px solid var(--line-toolbar-control);
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+.index-toggle {
+    display: none;
+    align-self: center;
+    height: 36px;
+    padding: 0 12px;
+    color: var(--text-toolbar);
+    background: var(--surface-toolbar-control);
+    border: 1px solid var(--line-toolbar-control);
+    border-radius: 5px;
+}
+
+.reader-layout {
+    display: grid;
+    flex: 1;
+    grid-template-columns: 286px minmax(0, 1fr);
+    min-height: 0;
+}
+
+.navigation {
+    min-height: 0;
+    overflow-y: auto;
+    background: var(--surface-outline);
+    border-right: 1px solid var(--line);
+}
+
+.navigation-heading {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    min-height: 47px;
+    padding: 16px 16px 10px;
+    background: var(--surface-outline);
+    border-bottom: 1px solid var(--line);
+}
+
+.navigation h2 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.navigation-heading span {
+    color: var(--text-muted);
+    font-size: 11px;
+}
+
+.navigation ol {
+    margin: 0;
+    padding: 5px 0 24px;
+    list-style: none;
+}
+
+.navigation li {
+    margin: 0;
+}
+
+.navigation button {
+    display: grid;
+    grid-template-columns: 3px minmax(0, 1fr) auto;
+    width: 100%;
+    min-height: 62px;
+    padding: 0;
+    text-align: left;
+    color: #263139;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #dde1e3;
+    cursor: pointer;
+}
+
+.navigation button:hover {
+    background: var(--surface-hover);
+}
+
+.navigation button.current {
+    background: var(--surface-current);
+    box-shadow: inset 0 0 0 1px #bdcbd2;
+}
+
+.navigation-mark {
+    width: 3px;
+    height: 100%;
+    background: transparent;
+}
+
+.navigation button[data-kind='speech'] .navigation-mark {
+    background: var(--speech);
+}
+
+.navigation button[data-kind='action'] .navigation-mark {
+    background: var(--action);
+}
+
+.navigation button[data-kind='question'] .navigation-mark {
+    background: var(--focus);
+}
+
+.navigation-copy {
+    min-width: 0;
+    padding: 10px 10px 9px 12px;
+}
+
+.navigation-copy strong {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 650;
+}
+
+.navigation-copy > span {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1.35;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.navigation small {
+    padding: 11px 12px 0 0;
+    color: #7a858b;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.empty-message {
+    margin: 16px;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.reading-pane {
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
+    background: var(--surface-document);
+}
+
+.step-controls {
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    height: 47px;
+    background: rgb(251 251 250 / 95%);
+    border-bottom: 1px solid var(--line-soft);
+    backdrop-filter: blur(8px);
+}
+
+.step-controls button {
+    width: 34px;
+    height: 30px;
+    padding: 0;
+    color: #3f4d55;
+    background: transparent;
+    border: 1px solid #cbd2d5;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.step-controls button:disabled {
+    cursor: default;
+    opacity: 0.35;
+}
+
+.step-controls span {
+    min-width: 52px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+}
+
+.section-controls {
+    position: sticky;
+    z-index: 2;
+    top: 47px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 47px;
+    padding: 0 20px;
+    background: rgb(251 251 250 / 95%);
+    border-bottom: 1px solid var(--line-soft);
+    backdrop-filter: blur(8px);
+}
+
+.section-controls label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-controls span {
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 650;
+}
+
+.section-controls select {
+    width: auto;
+    min-width: 180px;
+    height: 31px;
+    color: var(--text-main);
+    background: var(--surface-document);
+    border-color: var(--line);
+    font-size: 12px;
+}
+
+.document {
+    width: min(760px, calc(100% - 64px));
+    margin: 0 auto;
+    padding: 56px 0 100px;
+}
+
+.document-heading {
+    margin-bottom: 52px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid #d9dddf;
+}
+
+.document-heading p {
+    margin: 0 0 8px;
+    color: var(--text-muted);
+    font-size: 11px;
+}
+
+.document-heading h1 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 31px;
+    font-weight: 570;
+    letter-spacing: -0.02em;
+}
+
+.document-section {
+    padding: 0;
+    scroll-margin-top: 108px;
+}
+
+.document-section > h2 {
+    margin: 48px 0 18px;
+    color: #313c43;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.document-entry,
+.catechism-pair,
+.catechism-text {
+    position: relative;
+    margin: 0 0 8px;
+    padding: 12px 42px 13px 16px;
+    border-left: 3px solid transparent;
+    border-radius: 2px;
+    scroll-margin-top: 112px;
+}
+
+.document-entry.speech {
+    background: var(--surface-speech-muted);
+    border-left-color: var(--speech);
+}
+
+.document-entry.action {
+    width: calc(100% - 48px);
+    margin-left: 48px;
+    background: var(--surface-action-muted);
+    border-left-color: var(--action);
+}
+
+.document-entry.direction {
+    width: min(76%, 560px);
+    margin: 18px auto;
+    background: var(--surface-direction);
+    border-left-color: #aab3b8;
+    text-align: center;
+}
+
+.document-entry.text-entry {
+    margin: 24px auto 14px;
+    text-align: center;
+}
+
+.document-entry.speech.contribution {
+    background: var(--surface-speech);
+}
+
+.document-entry.action.contribution {
+    background: var(--surface-action);
+}
+
+.document-entry.current,
+.catechism-pair.current {
+    box-shadow:
+        inset 0 0 0 1px var(--line-current),
+        0 0 0 2px #dce5e9;
+}
+
+.entry-meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 5px;
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.entry-identification {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 10px;
+}
+
+.entry-kind {
+    color: var(--text-muted);
+    font: inherit;
+}
+
+.entry-role {
+    color: var(--text-main);
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.contribution-badge {
+    padding: 2px 5px;
+    color: var(--text-main);
+    background: rgb(255 255 255 / 55%);
+    border: 1px solid currentcolor;
+    border-radius: 3px;
+    font-size: 8px;
+    font-weight: 750;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.source-link {
+    color: #53636d;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.source-link:hover {
+    text-decoration: underline;
+}
+
+.source-button {
+    padding: 0;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+.library-screen {
+    display: grid;
+    width: 100%;
+    height: 100dvh;
+    padding: 32px;
+    place-items: center;
+    color: var(--text-main);
+    background: var(--surface-app);
+}
+
+.library-screen section {
+    width: min(440px, 100%);
+    padding: 32px;
+    background: var(--surface-document);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+}
+
+.library-screen h1 {
+    margin: 0 0 12px;
+    font-size: 24px;
+}
+
+.library-screen p {
+    margin: 0 0 22px;
+    color: var(--text-muted);
+    line-height: 1.55;
+}
+
+.library-screen button {
+    min-height: 36px;
+    padding: 0 14px;
+    color: white;
+    background: var(--focus);
+    border: 0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.entry-content,
+.catechism-pair p,
+.catechism-text p {
+    margin: 0;
+    color: var(--text-body);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 16px;
+    line-height: 1.65;
+    white-space: pre-line;
+}
+
+.entry-body.speech-body {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 14px;
+}
+
+.speech-role {
+    padding-top: 2px;
+    color: var(--text-main);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.65;
+    text-align: right;
+}
+
+.entry-text {
+    white-space: pre-line;
+}
+
+.entry-content img {
+    box-sizing: content-box;
+    width: 27px;
+    height: 27px;
+    padding: 3px;
+    object-fit: contain;
+    background: #c8c8c8;
+    border-radius: 6px;
+    vertical-align: middle;
+}
+
+.entry-content img.inline-image {
+    display: inline-block;
+    margin: 0 2px;
+}
+
+.entry-content img.block-image {
+    display: block;
+    margin: 8px auto 0;
+}
+
+.document-entry.direction .entry-content,
+.document-entry.text-entry .entry-content,
+.catechism-text p {
+    color: #606b72;
+    font-style: italic;
+}
+
+.document-entry.action .entry-content,
+.document-entry.direction .entry-content {
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.catechism-pair {
+    margin-bottom: 12px;
+    padding: 16px 18px;
+    background: var(--surface-question);
+    border-left-color: #aab4b9;
+}
+
+.catechism-text {
+    margin-bottom: 24px;
+    padding-right: 16px;
+}
+
+.catechism-pair.current {
+    border-left-color: var(--focus);
+}
+
+.catechism-pair .question {
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.catechism-prompt .question {
+    margin-bottom: 0;
+}
+
+.catechism-answer-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-top: 4px;
+}
+
+.answer-label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text-muted);
+    font-size: 10px;
+}
+
+@media (max-width: 760px) {
+    .app-header {
+        grid-template-columns: 1fr auto auto;
+        align-items: center;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .wordmark {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .index-toggle {
+        display: block;
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    .library-change {
+        display: block;
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .selector {
+        grid-column: 1 / -1;
+    }
+
+    .header-spacer,
+    .header-progress {
+        display: none;
+    }
+
+    .reader-layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    .navigation {
+        display: none;
+        flex: none;
+        max-height: 260px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .navigation.open {
+        display: block;
+    }
+
+    .reading-pane {
+        flex: 1;
+        height: auto;
+    }
+
+    .section-controls {
+        justify-content: stretch;
+        padding: 0 12px;
+    }
+
+    .section-controls label,
+    .section-controls select {
+        width: 100%;
+    }
+
+    .document {
+        width: calc(100% - 32px);
+        padding: 34px 0 70px;
+    }
+
+    .document-heading {
+        margin-bottom: 34px;
+    }
+
+    .document-heading h1 {
+        font-size: 25px;
+    }
+
+    .document-entry,
+    .catechism-pair,
+    .catechism-text {
+        padding-right: 16px;
+    }
+
+    .document-entry.action {
+        width: calc(100% - 20px);
+        margin-left: 20px;
+    }
+
+    .document-entry.direction {
+        width: 90%;
+    }
+
+    .entry-body.speech-body {
+        grid-template-columns: 90px minmax(0, 1fr);
+        gap: 10px;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        color: #e7edf1;
+        background: #14191d;
+        --surface-app: #14191d;
+        --surface-document: #171c20;
+        --surface-outline: #1b2227;
+        --surface-toolbar: #202b32;
+        --surface-toolbar-control: #2d3a42;
+        --surface-hover: #222b31;
+        --surface-current: #26323a;
+        --surface-question: #1e252a;
+        --surface-speech: #302b1c;
+        --surface-speech-muted: #211f19;
+        --surface-action: #1d2b31;
+        --surface-action-muted: #192328;
+        --surface-direction: #20262a;
+        --text-main: #edf2f4;
+        --text-body: #e1e6e9;
+        --text-muted: #9ca8ae;
+        --text-toolbar: #eef3f5;
+        --text-toolbar-muted: #afbec7;
+        --line: #343d43;
+        --line-soft: #30383e;
+        --line-current: #8babbc;
+        --line-toolbar: #152027;
+        --line-toolbar-control: #4a5962;
+        --speech: #d2ac57;
+        --action: #67a6bc;
+        --focus: #6da9cf;
+    }
+
+    .navigation button {
+        color: #dbe2e6;
+        border-bottom-color: #2d363c;
+    }
+
+    .navigation button.current {
+        box-shadow: inset 0 0 0 1px #43535d;
+    }
+
+    .navigation small {
+        color: #8d999f;
+    }
+
+    .step-controls {
+        background: rgb(23 28 32 / 95%);
+    }
+
+    .section-controls {
+        background: rgb(23 28 32 / 95%);
+    }
+
+    .step-controls button {
+        color: #cdd6da;
+        border-color: #3b464d;
+    }
+
+    .document-heading {
+        border-bottom-color: #343c41;
+    }
+
+    .document-section > h2 {
+        color: #dce3e7;
+    }
+
+    .document-entry.current,
+    .catechism-pair.current {
+        box-shadow:
+            inset 0 0 0 1px var(--line-current),
+            0 0 0 2px #283941;
+    }
+
+    .source-link {
+        color: #a7b5bc;
+    }
+
+    .document-entry.direction .entry-content,
+    .document-entry.text-entry .entry-content {
+        color: #aab4b9;
+    }
+
+    .catechism-pair {
+        border-left-color: #57636a;
+    }
+
+    .catechism-pair.current {
+        border-left-color: var(--focus);
+    }
+}

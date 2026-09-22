@@ -1,0 +1,95 @@
+name: Desktop builds
+
+on:
+    workflow_dispatch:
+    push:
+        tags:
+            - 'v*'
+
+jobs:
+    build:
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - platform: macos-latest
+                      target: aarch64-apple-darwin
+                      args: --target aarch64-apple-darwin
+                    - platform: macos-latest
+                      target: x86_64-apple-darwin
+                      args: --target x86_64-apple-darwin
+                    - platform: windows-latest
+                      target: windows-x86_64
+                      args: ''
+                    - platform: ubuntu-22.04
+                      target: linux-x86_64
+                      args: ''
+
+        runs-on: ${{ matrix.platform }}
+        env:
+            APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+            APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+            APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+            APPLE_ID: ${{ secrets.APPLE_ID }}
+            APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+            APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+            WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
+            WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+            WINDOWS_TIMESTAMP_URL: ${{ secrets.WINDOWS_TIMESTAMP_URL }}
+            LINUX_GPG_PRIVATE_KEY: ${{ secrets.LINUX_GPG_PRIVATE_KEY }}
+            LINUX_GPG_KEY_ID: ${{ secrets.LINUX_GPG_KEY_ID }}
+            LINUX_GPG_PASSPHRASE: ${{ secrets.LINUX_GPG_PASSPHRASE }}
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+                  cache: npm
+
+            - uses: dtolnay/rust-toolchain@stable
+              with:
+                  targets: ${{ startsWith(matrix.target, 'aarch64-apple') && 'aarch64-apple-darwin' || startsWith(matrix.target, 'x86_64-apple') && 'x86_64-apple-darwin' || '' }}
+
+            - name: Install Linux dependencies
+              if: matrix.platform == 'ubuntu-22.04'
+              run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf xdg-utils
+
+            - name: Import Linux signing key
+              if: matrix.platform == 'ubuntu-22.04' && env.LINUX_GPG_PRIVATE_KEY != ''
+              shell: bash
+              run: |
+                  printf '%s' "$LINUX_GPG_PRIVATE_KEY" | gpg --batch --import
+                  echo 'SIGN=1' >> "$GITHUB_ENV"
+                  echo 'APPIMAGETOOL_FORCE_SIGN=1' >> "$GITHUB_ENV"
+                  echo "SIGN_KEY=$LINUX_GPG_KEY_ID" >> "$GITHUB_ENV"
+                  echo "APPIMAGETOOL_SIGN_PASSPHRASE=$LINUX_GPG_PASSPHRASE" >> "$GITHUB_ENV"
+                  echo 'TAURI_SIGNING_RPM_KEY<<OFFICIUM_SIGNING_KEY' >> "$GITHUB_ENV"
+                  printf '%s\n' "$LINUX_GPG_PRIVATE_KEY" >> "$GITHUB_ENV"
+                  echo 'OFFICIUM_SIGNING_KEY' >> "$GITHUB_ENV"
+                  echo "TAURI_SIGNING_RPM_KEY_PASSPHRASE=$LINUX_GPG_PASSPHRASE" >> "$GITHUB_ENV"
+
+            - name: Import Windows signing certificate
+              if: matrix.platform == 'windows-latest' && env.WINDOWS_CERTIFICATE != '' && env.WINDOWS_TIMESTAMP_URL != ''
+              shell: pwsh
+              run: |
+                  $certificatePath = Join-Path $env:RUNNER_TEMP 'officium-signing.pfx'
+                  [IO.File]::WriteAllBytes($certificatePath, [Convert]::FromBase64String($env:WINDOWS_CERTIFICATE))
+                  $password = ConvertTo-SecureString -String $env:WINDOWS_CERTIFICATE_PASSWORD -Force -AsPlainText
+                  $certificate = Import-PfxCertificate -FilePath $certificatePath -CertStoreLocation Cert:\CurrentUser\My -Password $password
+                  $config = @{ bundle = @{ windows = @{ certificateThumbprint = $certificate.Thumbprint; digestAlgorithm = 'sha256'; timestampUrl = $env:WINDOWS_TIMESTAMP_URL } } }
+                  $config | ConvertTo-Json -Depth 4 | Set-Content src-tauri/tauri.signing.conf.json
+                  'TAURI_EXTRA_ARGS=--config src-tauri/tauri.signing.conf.json' | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+                  Remove-Item $certificatePath
+
+            - run: npm ci
+            - run: npm test
+            - run: npm run check
+            - run: npm run lint
+
+            - uses: tauri-apps/tauri-action@v0
+              with:
+                  args: ${{ matrix.args }} ${{ env.TAURI_EXTRA_ARGS }}
+                  uploadWorkflowArtifacts: true
+                  workflowArtifactNamePattern: officium-${{ matrix.target }}

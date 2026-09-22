@@ -1,0 +1,39 @@
+schema_version: 1
+id: demonstration-catechism
+order: 20
+document_type: catechism
+title: Demonstratiecatechismus
+language: nl
+source:
+    file: sources/demonstration-catechism.pdf
+sections:
+    - id: reading
+      title: Lezen en herinneren
+      blocks:
+          - id: introduction
+            type: text
+            text: Deze fictieve catechismus demonstreert hoe een inleidende passage in de volledige tekst blijft staan.
+            source:
+                pdf_page: 1
+                printed_page: "1"
+          - id: purpose
+            type: pair
+            question: Waarom lezen wij een tekst meer dan eenmaal?
+            answer: Omdat herhaling de volgorde, de verbanden en de bedoeling beter zichtbaar maakt.
+            source:
+                pdf_page: 1
+                printed_page: "1"
+          - id: context
+            type: pair
+            question: Waarom blijft de volledige tekst zichtbaar?
+            answer: Omdat een bijdrage pas duidelijk wordt wanneer wij ook zien wat eraan voorafgaat en erop volgt.
+            source:
+                pdf_page: 1
+                printed_page: "1"
+          - id: attention
+            type: pair
+            question: Wat vraagt een aandachtige lezing?
+            answer: Dat wij woorden, handelingen en hun plaats in het geheel afzonderlijk en samen onderzoeken.
+            source:
+                pdf_page: 2
+                printed_page: "2"

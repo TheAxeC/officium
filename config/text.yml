@@ -1,0 +1,31 @@
+app.title: Officium
+app.subtitle: Gestructureerde documenten bestuderen met behoud van de volledige context.
+library.choose: Kies documentenmap
+library.change: Bibliotheek
+library.loading: Bibliotheek laden...
+library.none_title: Kies uw documentenmap
+library.none_body: Selecteer de map die de documenten, bronnen en afbeeldingen bevat.
+library.error_title: De bibliotheek kon niet worden geladen
+reader.document: Document
+reader.role: Rol
+reader.ritual: Script
+reader.catechism: Studiegids
+reader.contributions: Bijdragen
+reader.questions: Vragen
+reader.close: Sluiten
+reader.of: van
+reader.previous: Vorige
+reader.next: Volgende
+reader.source: Bron
+reader.page: Pagina
+reader.page_short: p.
+reader.pdf_page_short: PDF
+reader.section: Sectie
+reader.speech: Gesproken tekst
+reader.action: Handeling
+reader.direction: Regie
+reader.text: Toelichting
+reader.contribution: Bijdrage
+reader.question: Vraag
+reader.answer: Antwoord
+reader.empty: Voor deze functie zijn geen bijdragen vastgelegd.
