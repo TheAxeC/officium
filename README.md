@@ -45,6 +45,17 @@ Platform-specific configuration produces `.app` and `.dmg` bundles on macOS, NSI
 
 The workflow signs packages when the corresponding repository secrets exist and otherwise produces unsigned artifacts. Apple signing and notarization use `APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD`, `APPLE_SIGNING_IDENTITY`, `APPLE_ID`, `APPLE_PASSWORD`, and `APPLE_TEAM_ID`. Windows Authenticode signing uses `WINDOWS_CERTIFICATE`, `WINDOWS_CERTIFICATE_PASSWORD`, and `WINDOWS_TIMESTAMP_URL`. Linux AppImage and RPM signing use `LINUX_GPG_PRIVATE_KEY`, `LINUX_GPG_KEY_ID`, and `LINUX_GPG_PASSPHRASE`. Signing credentials never belong in the repository.
 
+## Publishing to a WordPress membership site (planned)
+
+This section describes a planned feature that is not built yet. Officium would be shown on a WordPress site that uses the Simple Membership plugin, for logged-in members only. The login cookie of the site is sent only to the site's own host, so the library is served from the site itself and not from a subdomain or a separate Node server.
+
+1. An export step on the author's machine loads the library with the existing validator and writes a catalogue file, the source PDFs, and the images to an output directory that Git ignores.
+2. The author uploads that directory by SFTP to a directory that the web server does not serve to the public.
+3. A WordPress plugin kept in this repository, without any library content, provides the catalogue, source PDF, answer image, and entry image endpoints. Each endpoint serves a file only to a logged-in Simple Membership member or to a WordPress administrator. The plugin can limit each document to specific membership levels.
+4. A static build of the application, made with its own build mode, fetches the library from those endpoints. A shortcode shows the application in an iframe on a page of the member portal.
+
+The exported library is private content and never belongs in Git. Members with a permitted level, WordPress administrators, and anyone with file access to the web host can read it.
+
 ## Add personal documents
 
 Create `rituals/` at the repository root and put source PDFs in `rituals/sources/`. The whole `rituals/` directory is ignored by Git. The `source.file` and `answer_image` paths are relative to this directory and must remain inside it.
