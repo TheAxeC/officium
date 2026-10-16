@@ -3,7 +3,7 @@
     import type { OfficiumDocument, RitualDocument } from '$lib/data/model';
     import type { TextCatalog } from '$lib/data/text';
     import { navigationItems } from '$lib/reader/contributions';
-    import { readReaderState, writeReaderState } from '$lib/reader/state';
+    import { storageStore, type ReaderStateStore } from '$lib/reader/state';
     import CatechismDocument from './CatechismDocument.svelte';
     import Navigation from './Navigation.svelte';
     import RitualDocumentView from './RitualDocument.svelte';
@@ -12,13 +12,17 @@
         documents,
         text,
         onchangelibrary,
-        onopensource
+        onopensource,
+        stateStore
     }: {
         documents: OfficiumDocument[];
         text: TextCatalog;
         onchangelibrary?: () => void;
-        onopensource?: (documentId: string) => void;
+        onopensource?: (documentId: string, pdfPage: number) => void;
+        stateStore?: ReaderStateStore;
     } = $props();
+
+    const store = $derived(stateStore ?? storageStore(localStorage));
 
     let documentId = $state('');
     let roleId = $state<string | null>(null);
@@ -34,7 +38,7 @@
     const currentIndex = $derived(items.findIndex((item) => item.id === currentId));
 
     onMount(() => {
-        const stored = readReaderState(localStorage);
+        const stored = store.read();
         if (stored && documents.some((item) => item.id === stored.documentId)) {
             documentId = stored.documentId;
             const restoredDocument = documents.find((item) => item.id === stored.documentId);
@@ -57,7 +61,7 @@
 
     $effect(() => {
         if (ready) {
-            writeReaderState(localStorage, { documentId, roleId, itemId: currentId });
+            store.write({ documentId, roleId, itemId: currentId });
         }
     });
 

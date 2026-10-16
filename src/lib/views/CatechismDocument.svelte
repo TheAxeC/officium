@@ -12,7 +12,7 @@
         document: CatechismDocument;
         currentId: string | null;
         text: TextCatalog;
-        onopensource?: (documentId: string) => void;
+        onopensource?: (documentId: string, pdfPage: number) => void;
     } = $props();
 </script>
 

@@ -6,6 +6,7 @@ import tseslint from 'typescript-eslint';
 export default tseslint.config(
     {
         ignores: [
+            '.oculus/apps/',
             '.svelte-kit/',
             'build/',
             'node_modules/',

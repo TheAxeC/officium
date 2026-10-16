@@ -1,0 +1,13 @@
+# The project specifics the plan skills read (/plan, /spec, /refute, /land, /ordo-help, plan-orchestration).
+# Every path is relative to the repository root. A required key that is missing stops the skill that needs it, and the refusal names the key.
+# An optional key that is missing takes the default its comment gives. The pages live under .agents/ because /docs/ and /CLAUDE.md are git-ignored in this repository and a step's worktree holds tracked files only.
+
+roadmap: .agents/roadmap.md # The source of truth for what is open; a plan is one entry of it.
+verification: .agents/building.md # The page that defines the green check; /plan copies its commands into the ledger.
+rules: .agents/change-standard.md # How a change is made; every brief points here first.
+ledger_root: .scratch # A plan lives in <ledger_root>/<slug>/.
+archive_root: .scratch/archive # Where a closed plan's folder moves.
+worktree_root: .agents/worktrees # Where a step's worktree is created; ignored in .gitignore.
+worker: claude:opus # claude:<model> of the builder.
+reviewer: claude:opus # claude:<model> the first run of /refute, the brief check, the diagnosis agent and the lookups of /grill run on.
+libraries: avoid # avoid: no new dependency.

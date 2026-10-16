@@ -15,7 +15,7 @@
         roleId: string;
         currentId: string | null;
         text: TextCatalog;
-        onopensource?: (documentId: string) => void;
+        onopensource?: (documentId: string, pdfPage: number) => void;
     } = $props();
 
     const roleLabels = $derived(new Map(document.roles.map((role) => [role.id, role.label])));

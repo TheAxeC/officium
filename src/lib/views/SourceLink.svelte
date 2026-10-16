@@ -12,7 +12,7 @@
         documentId: string;
         source: SourcePage;
         text: TextCatalog;
-        onopen?: (documentId: string) => void;
+        onopen?: (documentId: string, pdfPage: number) => void;
     } = $props();
 
     const sourceHref = $derived(
@@ -40,7 +40,7 @@
         class="source-link source-button"
         type="button"
         aria-label={`${text['reader.source']}, ${pagePrefix} ${pageLabel}`}
-        onclick={() => onopen(documentId)}
+        onclick={() => onopen(documentId, source.pdfPage)}
     >
         {pagePrefix}
         {pageLabel}

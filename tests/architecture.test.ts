@@ -51,6 +51,7 @@ function sourceFiles(directory: string): string[] {
 
 const generatedDirectories = new Set([
     '.git',
+    '.oculus',
     '.svelte-kit',
     'build',
     'node_modules',

@@ -6,7 +6,13 @@ const desktop = process.env.OFFICIUM_DESKTOP === '1';
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
     kit: {
-        adapter: desktop ? staticAdapter({ fallback: 'index.html', strict: false }) : adapter()
+        adapter: desktop ? staticAdapter({ fallback: 'index.html', strict: false }) : adapter(),
+        typescript: {
+            config(config) {
+                config.include.push('../vite.oculus.config.ts');
+                return config;
+            }
+        }
     }
 };
 

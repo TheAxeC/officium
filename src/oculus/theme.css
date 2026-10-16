@@ -1,0 +1,118 @@
+/* Maps the tokens oculus paints on the root element of an app (--bg, --panel, --card, --ink,
+   --muted, --line, --chip, --accent, --accent-bg and the --c-* hues) onto the palette of
+   src/app.css, so the reader follows the oculus theme, and styles the notice that the oculus
+   build draws for a refused call. This file is loaded after src/app.css and only by the oculus
+   build. oculus names a token --line as well; it is the palette's own --line, so it is not set
+   here. The grey tile behind symbol images (.entry-content img) and the white text of the library
+   screen button keep the colours of src/app.css in every theme. */
+
+:root {
+    color: var(--ink, CanvasText);
+    background: var(--bg, Canvas);
+    --surface-app: var(--bg);
+    --surface-document: var(--panel);
+    --surface-outline: var(--card);
+    --surface-toolbar: var(--panel);
+    --surface-toolbar-control: var(--card);
+    --surface-hover: var(--chip);
+    --surface-current: var(--accent-bg);
+    --surface-question: var(--card);
+    --surface-speech: color-mix(in srgb, var(--c-honey) 18%, var(--panel));
+    --surface-speech-muted: color-mix(in srgb, var(--c-honey) 8%, var(--panel));
+    --surface-action: color-mix(in srgb, var(--c-cyan) 16%, var(--panel));
+    --surface-action-muted: color-mix(in srgb, var(--c-cyan) 7%, var(--panel));
+    --surface-direction: var(--chip);
+    --text-main: var(--ink);
+    --text-body: var(--ink);
+    --text-muted: var(--muted);
+    --text-toolbar: var(--ink);
+    --text-toolbar-muted: var(--muted);
+    --line-toolbar: var(--line);
+    --line-toolbar-control: var(--line);
+    --line-soft: color-mix(in srgb, var(--line) 60%, var(--panel));
+    --line-current: var(--accent);
+    --speech: var(--c-honey);
+    --action: var(--c-cyan);
+    --focus: var(--accent);
+}
+
+.navigation button {
+    color: var(--ink);
+    border-bottom-color: var(--line);
+}
+
+.navigation button.current {
+    box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.navigation small {
+    color: var(--muted);
+}
+
+.step-controls,
+.section-controls {
+    background: color-mix(in srgb, var(--panel) 95%, transparent);
+}
+
+.step-controls button {
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+.document-heading {
+    border-bottom-color: var(--line);
+}
+
+.document-section > h2 {
+    color: var(--ink);
+}
+
+.document-entry.direction,
+.catechism-pair {
+    border-left-color: var(--line);
+}
+
+.document-entry.current,
+.catechism-pair.current {
+    box-shadow:
+        inset 0 0 0 1px var(--line-current),
+        0 0 0 2px var(--accent-bg);
+}
+
+.contribution-badge {
+    background: color-mix(in srgb, var(--panel) 55%, transparent);
+}
+
+.source-link {
+    color: var(--muted);
+}
+
+.document-entry.direction .entry-content,
+.document-entry.text-entry .entry-content,
+.catechism-text p {
+    color: var(--muted);
+}
+
+.oculus-notice {
+    position: fixed;
+    z-index: 10;
+    right: 12px;
+    bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 8px 12px;
+    color: var(--ink);
+    background: var(--panel);
+    border: 1px solid var(--c-red);
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.oculus-notice button {
+    color: var(--ink);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+}

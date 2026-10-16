@@ -6,6 +6,9 @@ library.loading: Bibliotheek laden...
 library.none_title: Kies uw documentenmap
 library.none_body: Selecteer de map die de documenten, bronnen en afbeeldingen bevat.
 library.error_title: De bibliotheek kon niet worden geladen
+oculus.none_body: Er zijn geen documenten gevonden in rituals/ of examples/rituals/ van deze map.
+oculus.source_failed: Het bronbestand kon niet worden geopend
+oculus.state_failed: De leespositie kon niet worden bewaard
 reader.document: Document
 reader.role: Rol
 reader.ritual: Script

@@ -6,3 +6,4 @@ playwright-report/
 rituals/
 src-tauri/gen/
 src-tauri/target/
+.oculus/apps/

@@ -8,6 +8,7 @@
         "dev": "vite dev",
         "build": "vite build",
         "build:desktop": "cross-env OFFICIUM_DESKTOP=1 vite build",
+        "build:oculus": "vite build --config vite.oculus.config.ts",
         "tauri": "tauri",
         "tauri:dev": "tauri dev",
         "tauri:build": "tauri build",

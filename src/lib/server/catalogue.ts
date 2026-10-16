@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, readdirSync, realpathSync } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
-import { parse } from 'yaml';
 import { parseDocument, parseDocumentParts } from '$lib/data/parse';
+import { listedSectionNames } from '$lib/data/sections';
 import { DocumentValidationError } from '$lib/data/validate';
 import type { OfficiumDocument } from '$lib/data/model';
 import { compareDocuments, validateDocumentCollection } from '$lib/data/order';
@@ -154,32 +154,15 @@ function documentDefinitions(directory: string): DocumentDefinition[] {
 }
 
 function listedSectionPaths(documentPath: string, directory: string): string[] {
-    let value: unknown;
+    let manifest: string;
     try {
-        value = parse(readFileSync(documentPath, 'utf8'));
+        manifest = readFileSync(documentPath, 'utf8');
     } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         throw new DocumentValidationError(documentPath, '$', `invalid YAML: ${message}`);
     }
-    if (typeof value !== 'object' || value === null || Array.isArray(value)) {
-        throw new DocumentValidationError(documentPath, '$', 'expected an object');
-    }
-    const sections = (value as Record<string, unknown>).sections;
-    if (!Array.isArray(sections) || sections.length === 0) {
-        throw new DocumentValidationError(
-            documentPath,
-            '$.sections',
-            'expected a non-empty list of section file paths'
-        );
-    }
-    return sections.map((section, index) => {
-        if (typeof section !== 'string' || !/^sections\/[a-z0-9-]+\.yaml$/.test(section)) {
-            throw new DocumentValidationError(
-                documentPath,
-                `$.sections[${index}]`,
-                "expected a path shaped like 'sections/opening.yaml'"
-            );
-        }
+    const names = listedSectionNames(manifest, documentPath);
+    return names.map((section, index) => {
         const sectionPath = resolve(directory, section);
         if (!sectionPath.startsWith(`${resolve(directory, 'sections')}${sep}`)) {
             throw new DocumentValidationError(

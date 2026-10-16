@@ -8,6 +8,11 @@ type StoredReaderState = ReaderState & {
     version: 1;
 };
 
+export type ReaderStateStore = {
+    read(): ReaderState | null;
+    write(state: ReaderState): void;
+};
+
 export const readerStateKey = 'officium.reader.v1';
 
 export function readReaderState(storage: Storage): ReaderState | null {
@@ -16,23 +21,36 @@ export function readReaderState(storage: Storage): ReaderState | null {
         return null;
     }
     try {
-        const value = JSON.parse(raw) as unknown;
-        if (!isStoredReaderState(value)) {
-            return null;
-        }
-        return {
-            documentId: value.documentId,
-            roleId: value.roleId,
-            itemId: value.itemId
-        };
+        return parseReaderState(JSON.parse(raw));
     } catch {
         return null;
     }
 }
 
 export function writeReaderState(storage: Storage, state: ReaderState): void {
-    const stored: StoredReaderState = { version: 1, ...state };
-    storage.setItem(readerStateKey, JSON.stringify(stored));
+    storage.setItem(readerStateKey, JSON.stringify(serializeReaderState(state)));
+}
+
+export function parseReaderState(value: unknown): ReaderState | null {
+    if (!isStoredReaderState(value)) {
+        return null;
+    }
+    return {
+        documentId: value.documentId,
+        roleId: value.roleId,
+        itemId: value.itemId
+    };
+}
+
+export function serializeReaderState(state: ReaderState): StoredReaderState {
+    return { version: 1, ...state };
+}
+
+export function storageStore(storage: Storage): ReaderStateStore {
+    return {
+        read: () => readReaderState(storage),
+        write: (state) => writeReaderState(storage, state)
+    };
 }
 
 function isStoredReaderState(value: unknown): value is StoredReaderState {

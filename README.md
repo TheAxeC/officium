@@ -45,6 +45,14 @@ Platform-specific configuration produces `.app` and `.dmg` bundles on macOS, NSI
 
 The workflow signs packages when the corresponding repository secrets exist and otherwise produces unsigned artifacts. Apple signing and notarization use `APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD`, `APPLE_SIGNING_IDENTITY`, `APPLE_ID`, `APPLE_PASSWORD`, and `APPLE_TEAM_ID`. Windows Authenticode signing uses `WINDOWS_CERTIFICATE`, `WINDOWS_CERTIFICATE_PASSWORD`, and `WINDOWS_TIMESTAMP_URL`. Linux AppImage and RPM signing use `LINUX_GPG_PRIVATE_KEY`, `LINUX_GPG_KEY_ID`, and `LINUX_GPG_PASSPHRASE`. Signing credentials never belong in the repository.
 
+## Run in oculus
+
+Officium runs as an app in the oculus workbench when this folder is a folder of the oculus workspace. Run `npm run build:oculus`, which writes the app to `.oculus/apps/officium/`; Git, Prettier and ESLint ignore that folder. Oculus finds the app while it runs and lists it in its view catalogue, and the first open asks for your approval.
+
+The app reads the library through oculus's file bridge, from `rituals/` and, without personal documents, from `examples/rituals/`, so the library is the one in this folder and there is no library picker. A source button opens the PDF in oculus's file viewer at the PDF page of its entry. The reading position is kept per oculus tab, and the colours follow the oculus theme.
+
+A changed app asks for approval again, unless it was approved with "Keep approved while I edit". Run `npm run build:oculus` again after changing the interface.
+
 ## Publishing to a WordPress membership site (planned)
 
 This section describes a planned feature that is not built yet. Officium would be shown on a WordPress site that uses the Simple Membership plugin, for logged-in members only. The login cookie of the site is sent only to the site's own host, so the library is served from the site itself and not from a subdomain or a separate Node server.
@@ -283,6 +291,7 @@ npm run check
 npm run lint
 npm run build
 npm run format:check
+npm run build:oculus
 ```
 
 The privacy test checks the ignore rule and fails when Git reports a tracked path below `rituals/`.

@@ -1,0 +1,5 @@
+name: officium
+title: Officium
+description: Reads the documents of the officium library from this folder.
+glyph: page
+bridge: 1

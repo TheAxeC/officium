@@ -5,6 +5,8 @@ coverage/
 test-results/
 playwright-report/
 /tmp/
+/.agents/worktrees/
+/.oculus/apps/officium/
 /rituals/
 /src-tauri/target/
 /src-tauri/tauri.signing.conf.json
